@@ -1,0 +1,17 @@
+//
+//  DataModel.m
+//  仿淘宝头条轮播
+//
+//  Created by Yesi on 16/3/23.
+//  Copyright © 2016年 zhangguobing. All rights reserved.
+//
+
+#import "DataModel.h"
+
+@implementation DataModel
+- (void)modleWithTitle:(NSString *)title url:(NSString *)url articleId:(NSString *)articleId{
+    self.title = title;
+    self.link_url = url;
+    self.article_id = articleId;
+}
+@end

@@ -1,0 +1,67 @@
+//
+//  MWEScrollCell.m
+//  MagicWEMobile
+//
+//  Created by Yesi on 16/3/21.
+//  Copyright © 2016年 Michael_MagicWE. All rights reserved.
+//
+
+#import "MWEScrollCell.h"
+@interface MWEScrollCell()
+@property (weak, nonatomic) IBOutlet UIButton *topButton;
+@property (weak, nonatomic) IBOutlet UIButton *bottomButton;
+@property (weak, nonatomic) NSNotification *noti;
+
+
+/** Top pan gesture */
+@property (nonatomic, strong) UITapGestureRecognizer *tapTop;
+
+/** Bottom pan gesture */
+@property (nonatomic, strong) UITapGestureRecognizer *tapBottom;
+
+@end
+@implementation MWEScrollCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.topButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.bottomButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    // 创建通知
+    NSNotification *noti = [NSNotification notificationWithName:@"Carousel" object:nil];
+    self.noti = noti;
+    self.backgroundColor = [UIColor cyanColor];
+    // Init pans
+    self.tapTop =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topClick:)];
+    self.tapBottom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bottomClick:)];
+    [self.topButton addGestureRecognizer:_tapTop];
+    [self.bottomButton addGestureRecognizer:_tapBottom];
+}
+
+- (void)setTopModel:(DataModel *)topModel{
+     _topModel = topModel;
+    [self.topButton setTitle:topModel.title forState:UIControlStateNormal];
+    
+}
+- (void)setBottomModel:(DataModel *)bottomModel{
+    _bottomModel = bottomModel;
+    [self.bottomButton setTitle:bottomModel.title forState:UIControlStateNormal];
+    
+}
+
+- (IBAction)topClick:(id)sender {
+    // 尝试使用通知
+    NSDictionary *dict = @{@"view":self,
+                           @"isTop":@(YES)};
+    //通过通知中心发送通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Caroucel" object:nil userInfo:dict];
+
+}
+- (IBAction)bottomClick:(id)sender {
+    // 尝试使用通知
+    NSDictionary *dict = @{@"view":self,
+                           @"isTop":@(NO)};
+        //    创建通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Caroucel" object:nil userInfo:dict];
+}
+
+@end

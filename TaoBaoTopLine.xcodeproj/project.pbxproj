@@ -15,6 +15,10 @@
 		D43D0A491CACC52600A52234 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D43D0A471CACC52600A52234 /* LaunchScreen.storyboard */; };
 		D43D0A541CACC52600A52234 /* TaoBaoTopLineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D43D0A531CACC52600A52234 /* TaoBaoTopLineTests.m */; };
 		D43D0A5F1CACC52600A52234 /* TaoBaoTopLineUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D43D0A5E1CACC52600A52234 /* TaoBaoTopLineUITests.m */; };
+		D43D0A7E1CACC53000A52234 /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D43D0A6E1CACC53000A52234 /* DataModel.m */; };
+		D43D0A7F1CACC53000A52234 /* GBTopLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = D43D0A701CACC53000A52234 /* GBTopLineView.m */; };
+		D43D0A8B1CACC68100A52234 /* TestView.m in Sources */ = {isa = PBXBuildFile; fileRef = D43D0A891CACC68100A52234 /* TestView.m */; };
+		D43D0A8C1CACC68100A52234 /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D43D0A8A1CACC68100A52234 /* TestView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +55,13 @@
 		D43D0A5A1CACC52600A52234 /* TaoBaoTopLineUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaoBaoTopLineUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43D0A5E1CACC52600A52234 /* TaoBaoTopLineUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TaoBaoTopLineUITests.m; sourceTree = "<group>"; };
 		D43D0A601CACC52600A52234 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D43D0A6D1CACC53000A52234 /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
+		D43D0A6E1CACC53000A52234 /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
+		D43D0A6F1CACC53000A52234 /* GBTopLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBTopLineView.h; sourceTree = "<group>"; };
+		D43D0A701CACC53000A52234 /* GBTopLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBTopLineView.m; sourceTree = "<group>"; };
+		D43D0A881CACC68100A52234 /* TestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestView.h; sourceTree = "<group>"; };
+		D43D0A891CACC68100A52234 /* TestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestView.m; sourceTree = "<group>"; };
+		D43D0A8A1CACC68100A52234 /* TestView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +112,7 @@
 		D43D0A381CACC52600A52234 /* TaoBaoTopLine */ = {
 			isa = PBXGroup;
 			children = (
+				D43D0A6C1CACC53000A52234 /* MWEInfiniteScrollView */,
 				D43D0A3C1CACC52600A52234 /* AppDelegate.h */,
 				D43D0A3D1CACC52600A52234 /* AppDelegate.m */,
 				D43D0A3F1CACC52600A52234 /* ViewController.h */,
@@ -138,6 +150,20 @@
 				D43D0A601CACC52600A52234 /* Info.plist */,
 			);
 			path = TaoBaoTopLineUITests;
+			sourceTree = "<group>";
+		};
+		D43D0A6C1CACC53000A52234 /* MWEInfiniteScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				D43D0A881CACC68100A52234 /* TestView.h */,
+				D43D0A891CACC68100A52234 /* TestView.m */,
+				D43D0A8A1CACC68100A52234 /* TestView.xib */,
+				D43D0A6D1CACC53000A52234 /* DataModel.h */,
+				D43D0A6E1CACC53000A52234 /* DataModel.m */,
+				D43D0A6F1CACC53000A52234 /* GBTopLineView.h */,
+				D43D0A701CACC53000A52234 /* GBTopLineView.m */,
+			);
+			path = MWEInfiniteScrollView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D43D0A8C1CACC68100A52234 /* TestView.xib in Resources */,
 				D43D0A491CACC52600A52234 /* LaunchScreen.storyboard in Resources */,
 				D43D0A461CACC52600A52234 /* Assets.xcassets in Resources */,
 				D43D0A441CACC52600A52234 /* Main.storyboard in Resources */,
@@ -271,7 +298,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D43D0A411CACC52600A52234 /* ViewController.m in Sources */,
+				D43D0A7E1CACC53000A52234 /* DataModel.m in Sources */,
+				D43D0A7F1CACC53000A52234 /* GBTopLineView.m in Sources */,
 				D43D0A3E1CACC52600A52234 /* AppDelegate.m in Sources */,
+				D43D0A8B1CACC68100A52234 /* TestView.m in Sources */,
 				D43D0A3B1CACC52600A52234 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

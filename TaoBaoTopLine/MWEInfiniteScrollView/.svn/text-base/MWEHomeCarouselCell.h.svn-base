@@ -1,0 +1,18 @@
+//
+//  MWEHomeCarouselCell.h
+//  MagicWEMobile
+//
+//  Created by Yesi on 16/3/14.
+//  Copyright © 2016年 Michael_MagicWE. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface MWEHomeCarouselCell : UITableViewCell
+
+// 需要外面传入2 个模型 数组
+@property (nonatomic, strong) NSMutableArray * magicModelArray;
+@property (nonatomic ,strong) NSMutableArray * topicModelArray;
+
+
+@end

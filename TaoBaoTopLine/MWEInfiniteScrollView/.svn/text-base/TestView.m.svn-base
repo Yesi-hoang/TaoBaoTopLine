@@ -1,0 +1,69 @@
+//
+//  TestView.m
+//  仿淘宝头条轮播
+//
+//  Created by Yesi on 16/3/22.
+//  Copyright © 2016年 zhangguobing. All rights reserved.
+//
+
+#import "TestView.h"
+@interface TestView()
+@property (weak, nonatomic) NSNotification *noti;
+@property (weak, nonatomic) IBOutlet UIButton *topButton;
+@property (weak, nonatomic) IBOutlet UIButton *bottomButton;
+
+/** Top pan gesture */
+@property (nonatomic, strong) UITapGestureRecognizer *tapTop;
+
+/** Bottom pan gesture */
+@property (nonatomic, strong) UITapGestureRecognizer *tapBottom;
+@end
+@implementation TestView
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    
+    self.topButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    self.bottomButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    // 创建通知
+    NSNotification *noti = [NSNotification notificationWithName:@"Carousel" object:nil];
+    self.noti = noti;
+    // Init pans
+        self.tapTop =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topClick:)];
+        self.tapBottom = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bottomClick:)];
+        [self.topButton addGestureRecognizer:_tapTop];
+        [self.bottomButton addGestureRecognizer:_tapBottom];
+}
+
+- (void)setTopModel:(DataModel *)topModel{
+    _topModel = topModel;
+    //  去掉\n
+    NSString *title = [NSString stringWithFormat:@"%@", [topModel.title stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]];
+    [self.topButton setTitle:title forState:UIControlStateNormal];
+    
+}
+
+- (void)setBottomModel:(DataModel *)bottomModel{
+    _bottomModel = bottomModel;
+    NSString *title = [NSString stringWithFormat:@"%@", [bottomModel.title stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"]];
+    [self.bottomButton setTitle:title forState:UIControlStateNormal];
+    
+}
+- (IBAction)topClick:(id)sender {
+    // 尝试使用通知
+    NSDictionary *dict = @{@"view":self,
+                           @"isTop":@(YES),
+                           @"isMagic":@(self.topModel.isMagic)};
+    //通过通知中心发送通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Caroucel" object:nil userInfo:dict];
+}
+- (IBAction)bottomClick:(id)sender {
+    // 尝试使用通知
+    NSDictionary *dict = @{@"view":self,
+                           @"isTop":@(NO),
+                           @"isMagic":@(self.bottomModel.isMagic)};
+    //    创建通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Caroucel" object:nil userInfo:dict];
+}
+
+@end

@@ -1,0 +1,195 @@
+//
+//  MWEInfiniteScrollView.m
+//  MagicWEMobile
+//
+//  Created by Yesi on 16/3/21.
+//  Copyright © 2016年 Michael_MagicWE. All rights reserved.
+//
+
+#import "MWEInfiniteScrollView.h"
+#import "MWEScrollCell.h"
+static NSInteger Times = 50;
+static NSString  *MWEScrollCellID = @"MWEScrollCell";
+
+@interface MWEInfiniteScrollView()
+
+@end
+@implementation MWEInfiniteScrollView
+{
+    UICollectionView *_collectionView;
+    UICollectionViewFlowLayout *_layout;
+    UIPageControl *_page;
+    
+    NSTimer *_timer;
+}
+//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    _collectionView.panGestureRecognizer.enabled = NO;
+//}
+- (id)initWithFrame:(CGRect)frame{
+     if (self = [super initWithFrame:frame]) {
+        
+                  // 1.创建UICollectionViewLayout
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.itemSize = self.frame.size;
+        // 组与组之间的间距
+        layout.minimumLineSpacing = 0;
+        // cell之间的间距
+        layout.minimumInteritemSpacing = 0;
+        // 设置滚动方向
+        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        _layout = layout;
+        
+        // 2.创建一个CollectionView
+//        NSLog(@"%@",NSStringFromCGRect(self.frame));
+        
+        UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:self.bounds collectionViewLayout:layout];
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        collectionView.pagingEnabled = YES;
+        collectionView.showsVerticalScrollIndicator = NO;
+        [self addSubview:collectionView];
+        _collectionView = collectionView;
+        _collectionView.backgroundColor = [UIColor clearColor];
+         
+         //0 禁用scrollView的touch事件
+         _collectionView.userInteractionEnabled = NO;
+
+        // 3.注册重用cell
+//        [collectionView registerClass:[MWEScrollCell class] forCellWithReuseIdentifier:MWEScrollCellID];
+         [collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([MWEScrollCell class]) bundle:nil] forCellWithReuseIdentifier:NSStringFromClass([MWEScrollCell class])];
+         
+         /*
+        // 4.创建页面指示器
+        UIPageControl *page = [[UIPageControl alloc]init];
+        // 当前页的颜色
+        page.currentPageIndicatorTintColor = [UIColor whiteColor];
+        // 其它页的颜色
+        page.pageIndicatorTintColor = [UIColor lightGrayColor];
+        
+        [self.contentView addSubview:page];
+       
+        _page = page;
+          */
+    }
+    return self;
+}
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    // 1.重新调整集合视图以及cell的大小
+    _collectionView.frame = self.bounds;
+    _layout.itemSize = self.bounds.size;
+    
+    // 1.1调整页面指示器的位置
+//    _page.center = CGPointMake(self.center.x, self.frame.size.height - 15);
+    
+    // 2.将collectionView滚动到最中间去
+    NSInteger middleIndex = ((self.modelDataArray.count + 1) / 2 * Times)/2;
+    
+    if (_collectionView.contentOffset.y == 0) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:middleIndex inSection:0];
+        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    }
+}
+
+//- (void)setImagesArray:(NSArray *)imagesArray
+//{
+//    _imagesArray = imagesArray;
+//    // 重新开启定时器
+//    [self setUpTimer];
+//    
+//    // 设置页面指示器的总页数
+//    _page.numberOfPages = imagesArray.count;
+//}
+
+- (void)setModelDataArray:(NSArray *)modelDataArray{
+    _modelDataArray = modelDataArray;
+    [self setUpTimer];
+}
+
+
+#pragma mark - UICollectionView数据源方法
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    NSInteger pageCount = ((int)(self.modelDataArray.count + 1) / 2) * Times;
+    return pageCount;
+}
+- (MWEScrollCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    MWEScrollCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MWEScrollCellID forIndexPath:indexPath];
+    
+    if (!cell) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([MWEScrollCell class]) owner:nil options:nil]lastObject];
+    }
+//        cell.backgroundColor = [UIColor colorWithRed:((float)arc4random_uniform(256) / 255.0) green:((float)arc4random_uniform(256) / 255.0) blue:((float)arc4random_uniform(256) / 255.0) alpha:1.0];
+    
+//    NSInteger dataCount = self.modelDataArray.count;
+    NSInteger pageCount = (self.modelDataArray.count + 1) / 2;
+
+    DataModel * topModel = self.modelDataArray[indexPath.item % pageCount * 2];
+    DataModel * bottomModle = self.modelDataArray[indexPath.item % pageCount * 2 + 1];
+    cell.topModel = topModel;
+    cell.bottomModel = bottomModle;
+    
+    return cell;
+}
+
+#pragma mark - UIScrollViewDelegate
+
+// 用户拖拽scrollView调用
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    // 停止定时器工作
+//    [_timer invalidate];
+//    _timer = nil;
+}
+// 用户停止拖拽scrollView调用
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    // 重新开启定时器
+//    [self setUpTimer];
+}
+
+// 创建一个定时器
+- (void)setUpTimer
+{
+    [_timer invalidate];
+    _timer = nil;
+    
+    // 创建一个定时器
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(startAutoScroll) userInfo:nil repeats:YES];
+    // 将定时器加入NSRunLoop
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    
+    _timer = timer;
+}
+// 定时器监听方法
+- (void)startAutoScroll
+{
+    
+    /**
+     1.获取当前collectionView滚动到那一个cell
+     2.滚动到下一个cell
+     */
+    // 当前collectionView滚动到了第几个cell
+    CGFloat currentindex = _collectionView.contentOffset.y/_collectionView.bounds.size.height;
+    
+    currentindex++;
+    NSInteger page = (self.modelDataArray.count + 1) / 2;
+//    NSLog(@"%f",currentindex);
+    if (currentindex == page * Times) {
+        // 滚回第一张
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    }else{
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:currentindex inSection:0];
+        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+    }
+}
+//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+//    _collectionView.panGestureRecognizer.enabled = NO;
+//}
+
+
+@end
