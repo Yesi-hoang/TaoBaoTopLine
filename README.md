@@ -1,6 +1,7 @@
 # TaoBaoTopLine
 仿淘宝头条
-
+效果图
+![image](https://github.com/Yesi-hoang/TaoBaoTopLine/tree/master/Gif) 
 ## 如何使用
 1. 创建数据
 ```
